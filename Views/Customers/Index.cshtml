@@ -1,0 +1,60 @@
+@model TaskEFC.ViewModels.CustomerIndexViewModel
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Customers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form asp-action="Index" method="get" class="d-flex flex-wrap align-items-center gap-2 mb-3">
+    <input type="hidden" name="sortOrder" value="@Model.SortOrder" />
+    <label for="searchString">Find by name:</label>
+    <input type="search" id="searchString" name="searchString" value="@Model.SearchString" class="form-control w-auto" />
+    <input type="submit" value="Search" class="btn btn-outline-secondary" />
+    <span>| <a asp-action="Index">Back to Full List</a></span>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@Model.NextLastNameSort"
+                   asp-route-searchString="@Model.SearchString">LastName</a>
+                @Model.LastNameIndicator
+            </th>
+            <th>FirstName</th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@Model.NextAddressSort"
+                   asp-route-searchString="@Model.SearchString">Address</a>
+                @Model.AddressIndicator
+            </th>
+            <th>Discount</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Customers)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+            <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Address)</td>
+            <td>@Html.DisplayFor(modelItem => item.Discount)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@if (Model.Customers.Count == 0)
+{
+    <p class="text-muted">No customers found.</p>
+}

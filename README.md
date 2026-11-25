@@ -49,3 +49,35 @@ Note. While the creation of the items in entities that use the navigation proper
 
 Useful links:
 https://docs.microsoft.com/ru-ru/aspnet/core/data/ef-mvc/?view=aspnetcore-3.1
+
+## Running the solution
+
+Requirements: .NET 10 SDK and Docker.
+
+1. Start SQL Server (listens on `127.0.0.1:14333`):
+
+   ```
+   docker compose up -d --wait
+   ```
+
+2. Run the application and open http://localhost:5148:
+
+   ```
+   dotnet run --launch-profile http
+   ```
+
+On startup the application applies the migrations and fills an empty database `Shoppingdb` with sample data.
+
+To use another SQL Server instance (for example LocalDB), change the `ShoppingContext` connection string in `appsettings.json`:
+
+```
+Server=(localdb)\\mssqllocaldb;Database=Shoppingdb;Trusted_Connection=True
+```
+
+The password in `docker-compose.yml` and `appsettings.json` is meant for the local development database only.
+
+## Notes on the model
+
+- `Discount` is stored as an integer: `O` (ordinary) = 0, `R` (regular) = 1, `V` (VIP) = 2. It does not change order totals.
+- The schema keeps the price only in `Products`, so changing a price also changes the totals of existing orders.
+- Customers, supermarkets and products that are used in orders cannot be deleted. Deleting an order deletes its details.

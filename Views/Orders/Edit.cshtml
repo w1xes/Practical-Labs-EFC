@@ -1,0 +1,45 @@
+@model TaskEFC.Models.Order
+
+@{
+    ViewData["Title"] = "Edit Order";
+}
+
+<h1>Edit</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-select"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SupermarketId" class="control-label"></label>
+                <select asp-for="SupermarketId" asp-items="ViewBag.Supermarkets" class="form-select"></select>
+                <span asp-validation-for="SupermarketId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-id="@Model.Id">Manage products of this order</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
