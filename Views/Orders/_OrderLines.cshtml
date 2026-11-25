@@ -1,0 +1,55 @@
+@model TaskEFC.Models.Order
+
+@{
+    var editable = ViewData["Editable"] is true;
+}
+
+@if (Model.OrderDetails.Count == 0)
+{
+    <p class="text-muted">This order has no products.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Cost</th>
+                @if (editable)
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var line in Model.OrderDetails)
+        {
+            <tr>
+                <td>@line.Product?.Name</td>
+                <td>@line.Quantity</td>
+                <td>@line.Product?.Price.ToString("F2")</td>
+                <td>@Html.DisplayFor(modelItem => line.Cost)</td>
+                @if (editable)
+                {
+                    <td>
+                        <a asp-controller="OrderDetails" asp-action="Edit" asp-route-id="@line.Id">Edit</a> |
+                        <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id="@line.Id">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3">Total cost</th>
+                <th>@Html.DisplayFor(model => model.TotalCost)</th>
+                @if (editable)
+                {
+                    <th></th>
+                }
+            </tr>
+        </tfoot>
+    </table>
+}

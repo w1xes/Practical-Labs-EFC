@@ -1,0 +1,50 @@
+@model TaskEFC.ViewModels.OrderIndexViewModel
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>OrderDate</th>
+            <th>Customer</th>
+            <th>SuperMarket</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Orders)
+    {
+        <tr class="@(item.Id == Model.SelectedOrder?.Id ? "table-active" : "")">
+            <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+            <td>@item.Customer?.FullName</td>
+            <td>@item.Supermarket?.Name</td>
+            <td>
+                <a asp-action="Index" asp-route-id="@item.Id">Select</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@if (Model.SelectedOrder is { } order)
+{
+    <h3 class="mt-4">Order Details</h3>
+    <p>
+        <a asp-controller="OrderDetails" asp-action="Create" asp-route-orderId="@order.Id">Add Product</a>
+    </p>
+    <partial name="_OrderLines" model="order" view-data='new ViewDataDictionary(ViewData) { { "Editable", true } }' />
+}
+else if (Model.Orders.Count > 0)
+{
+    <p class="text-muted">Select an order to see its products.</p>
+}

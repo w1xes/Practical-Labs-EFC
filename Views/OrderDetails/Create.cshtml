@@ -1,0 +1,27 @@
+@model TaskEFC.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h1>Add Product</h1>
+
+<h4>Order Details</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <input type="hidden" asp-for="OrderId" />
+            <partial name="_OrderDetailFields" model="Model" />
+            <input type="submit" value="Add" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-controller="Orders" asp-action="Index" asp-route-id="@Model.OrderId">Back to Order</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
