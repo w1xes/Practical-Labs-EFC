@@ -1,0 +1,44 @@
+@model TaskEFC.ViewModels.PaginatedList<TaskEFC.Models.Supermarket>
+
+@{
+    ViewData["Title"] = "Supermarkets";
+}
+
+<h1>Supermarkets</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Address)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<nav aria-label="Supermarkets pages" class="d-flex align-items-center gap-2">
+    <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-outline-secondary @(Model.HasPreviousPage ? "" : "disabled")"
+       aria-disabled="@(Model.HasPreviousPage ? "false" : "true")">Previous</a>
+    <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-outline-secondary @(Model.HasNextPage ? "" : "disabled")"
+       aria-disabled="@(Model.HasNextPage ? "false" : "true")">Next</a>
+    <span class="text-muted">Page @Model.PageIndex of @Model.TotalPages</span>
+</nav>
